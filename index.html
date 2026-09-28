@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador Múltiple de Etiquetas</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="form-container-multi">
+    <h2>Generador de Etiquetas Múltiples </h2>
+
+    <form action="guardar.php" method="POST" target="_blank">
+        <div id="lista-productos">
+            <!-- Item de producto inicial -->
+            <div class="producto-item">
+                <div class="campo">
+                    <label>Empresa:</label>
+                    <select name="empresa[]" required>
+                        <option value="ekipment.jpg">EKIPMENT</option>
+                        <option value="Hoverd.jpg">HOVERD</option>
+                        <option value="ATP.jpg">A.T.P.</option>
+                        <option value="ProyectosIngenieria.jpg">PROYECTOS DE INGENIERÍA</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Código:</label>
+                    <input type="text" name="codigo[]" placeholder="Ej: RNT-34.12" required>
+                </div>
+
+                <div class="campo campo-ancho">
+                    <label>Nombre del Producto:</label>
+                    <input type="text" name="nombre[]" placeholder="Ej: INTERRUPTOR DE VIBRADOR" required>
+                </div>
+
+                <div class="campo campo-corto">
+                    <label>Cant:</label>
+                    <input type="number" name="cantidad[]" min="1" value="1" required>
+                </div>
+
+                <div class="campo campo-btn">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn-eliminar" onclick="eliminarFila(this)" style="display:none;">✕</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="acciones-form">
+            <button type="button" class="btn-agregar" onclick="agregarProducto()">+ Agregar otro producto</button>
+            <button type="submit" class="btn-submit">Generar e Imprimir Todas las Etiquetas</button>
+        </div>
+    </form>
+</div>
+
+<script>
+function agregarProducto() {
+    const contenedor = document.getElementById('lista-productos');
+    const primeraFila = contenedor.querySelector('.producto-item');
+    
+    // Clonar la primera fila
+    const nuevaFila = primeraFila.cloneNode(true);
+
+    // Limpiar los valores de la nueva fila
+    nuevaFila.querySelector('input[name="codigo[]"]').value = '';
+    nuevaFila.querySelector('input[name="nombre[]"]').value = '';
+    nuevaFila.querySelector('input[name="cantidad[]"]').value = '1';
+    
+    // Mostrar botón de eliminar
+    nuevaFila.querySelector('.btn-eliminar').style.display = 'block';
+
+    contenedor.appendChild(nuevaFila);
+    actualizarBotonesEliminar();
+}
+
+function eliminarFila(btn) {
+    const fila = btn.closest('.producto-item');
+    fila.remove();
+    actualizarBotonesEliminar();
+}
+
+function actualizarBotonesEliminar() {
+    const filas = document.querySelectorAll('.producto-item');
+    filas.forEach((fila, index) => {
+        const btnEliminar = fila.querySelector('.btn-eliminar');
+        if (filas.length > 1) {
+            btnEliminar.style.display = 'block';
+        } else {
+            btnEliminar.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
